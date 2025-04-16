@@ -1,13 +1,15 @@
 <template>
-  <header>
-    <div class="wrapper">早上好啊</div>
-  </header>
-  <index></index>
+  <router-view></router-view>
 </template>
 
 <script setup lang="ts">
-import index from './pages/IndexPage.vue'
-//import { RouterView, RouterLink } from 'vue-router'
+import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router' // 如果需要的话
 </script>
 
-<style scoped></style>
+<style scoped>
+#app {
+  width: 100%;
+  height: 100%;
+}
+</style>
