@@ -11,6 +11,6 @@ import { useRouter } from 'vue-router'
 #app {
   width: 100%;
   height: 100%;
-  overflow: hidden; /* 防止滚动条 */
+  /* 防止滚动条 overflow: hidden; */
 }
 </style>
