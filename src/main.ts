@@ -6,14 +6,12 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import api from './api/api'
 const pinia = createPinia()
 const app = createApp(App)
+
+app.config.globalProperties.$api = api
 app.use(ElementPlus)
 app.use(pinia)
 app.use(router) // 使用路由
-// autofit.init({
-//   dw: 1920, // 设计稿宽度
-//   dh: 1080, // 设计稿高度
-//   el: '#app', // 缩放的根节点
-// })
 app.mount('#app')

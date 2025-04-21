@@ -42,3 +42,6 @@ npm run build
 npm run lint
 ```
 >>>>>>> master
+>>>>>>>
+>>>>>>> 图片展示
+>>>>>>> https://github.com/user-attachments/assets/d3914fb1-e505-466b-a254-7a497184148a

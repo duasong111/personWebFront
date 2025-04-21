@@ -1,18 +1,20 @@
-<!-- login.vue -->
 <template>
   <div class="container">
-    <div class="showMe">这是一个展示自己的动画</div>
+    <!-- 动画展示 -->
+    <div class="showMe">
+      <h1 id="typed"></h1>
+    </div>
     <el-row :gutter="20" class="grid-container">
       <el-col :xs="24" :sm="8" :md="6">
-        <div class="rightCard">展示1</div>
+        <div class="leftCardHeard">技术栈</div>
         <div ref="pieChartContainer" class="pie-chart-container"></div>
       </el-col>
       <el-col :xs="24" :sm="8" :md="10">
-        <div class="leftCard">展示2</div>
+        <div class="middleCardHeard">GitHub 提交</div>
         <div ref="chartContainer" class="chart-container"></div>
       </el-col>
       <el-col :xs="24" :sm="8" :md="8">
-        <div class="rightCard">展示1</div>
+        <div class="rightCardHeard">超级登录</div>
         <div class="body-login">
           <el-form
             ref="ruleFormRef"
@@ -27,7 +29,7 @@
               <el-input v-model="loginForm.username" />
             </el-form-item>
             <el-form-item label="密码:" prop="pass">
-              <el-input v-model="loginForm.pass" type="password" autocomplete="off" />
+              <el-input v-model="loginForm.password" type="password" autocomplete="off" />
             </el-form-item>
             <div class="submitBtn">
               <el-form-item>
@@ -41,18 +43,30 @@
     </el-row>
   </div>
 </template>
-
 <script setup lang="ts">
-import { ref, onMounted, nextTick, onUnmounted } from 'vue'
+import { ref, nextTick, onUnmounted, getCurrentInstance, reactive, onMounted } from 'vue'
 import * as echarts from 'echarts'
-import { reactive } from 'vue'
+import axios from 'axios'
+import Typed from 'typed.js'
 import { useRouter } from 'vue-router'
-
+import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
+const { proxy } = getCurrentInstance() as { proxy: any }
+//开始标题动画展示效果
+onMounted(() => {
+  new Typed('#typed', {
+    strings: ['🐒 Welcome to Duasong website !', 'Go ahead , everybody ! ! !'],
+    typeSpeed: 80,
+    backSpeed: 40,
+    loop: true,
+  })
+})
+// 用户登录表单
 const ruleFormRef = ref(null)
 const router = useRouter()
+
 const loginForm = reactive({
   username: '',
-  pass: '',
+  password: '',
 })
 
 const rules = reactive({
@@ -68,12 +82,15 @@ const rules = reactive({
 
 const handleLogin = async () => {
   try {
-    router.push('/home')
+    const response = await proxy.$api.loginUser(loginForm) // 传递 formData
+    console.log('登录成功:', response.data)
+    // 处理登录成功的逻辑（如跳转页面）
   } catch (error) {
-    console.error('登录出错:', error)
+    console.error('登录失败:', error)
+    // 处理错误（如显示错误提示）
   }
 }
-
+// 重置表单
 const resetForm = () => {
   ruleFormRef.value.resetFields()
 }
@@ -83,6 +100,7 @@ const pieChartContainer = ref<HTMLDivElement | null>(null)
 let myChart: echarts.ECharts | null = null
 let pieChart: echarts.ECharts | null = null
 
+// Github 数据的更新
 const initChart = () => {
   if (chartContainer.value) {
     myChart = echarts.init(chartContainer.value)
@@ -92,41 +110,65 @@ const initChart = () => {
       xAxis: [
         {
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: [
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
+          ],
           axisTick: { alignWithLabel: true },
         },
       ],
       yAxis: [{ type: 'value' }],
       series: [
-        { name: 'Direct', type: 'bar', barWidth: '60%', data: [10, 52, 200, 334, 390, 330, 220] },
+        {
+          name: '月提交量:',
+          type: 'bar',
+          barWidth: '60%',
+          data: [10, 52, 70, 134, 190, 130, 120, 80, 23, 54, 45],
+        },
       ],
     }
     myChart.setOption(option)
   }
 }
 
+// 使用饼图对自己的技术进行一个简单的概括
 const initPieChart = () => {
   if (pieChartContainer.value) {
     pieChart = echarts.init(pieChartContainer.value)
     const option = {
-      tooltip: { trigger: 'item' },
+      tooltip: {
+        trigger: 'item',
+        formatter: (params: any) => {
+          return `${params.data.name}: ${params.data.title}`
+        },
+      },
       legend: { top: '5%', left: 'center' },
       series: [
         {
-          name: 'Access From',
+          name: '技 术 栈',
           type: 'pie',
-          radius: ['40%', '70%'],
+          radius: ['40%', '85%'],
           avoidLabelOverlap: false,
           itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
           label: { show: false, position: 'center' },
           emphasis: { label: { show: true, fontSize: 20, fontWeight: 'bold' } },
           labelLine: { show: false },
           data: [
-            { value: 1048, name: 'Search Engine' },
-            { value: 735, name: 'Direct' },
-            { value: 580, name: 'Email' },
-            { value: 484, name: 'Union Ads' },
-            { value: 300, name: 'Video Ads' },
+            { value: 1000, name: 'Python后端', title: 'Django Flask FastApi + 爬虫' },
+            { value: 735, name: 'Web前端', title: 'HTML + JS + Vue + Node + Nginx' },
+            { value: 580, name: '微信小程序', title: '原生 + LinUI + JS + TS' },
+            { value: 484, name: '数据库', title: 'MySQL ,MongoDB,PostgreSQL' },
+            { value: 300, name: '开发板', title: '树莓派 , LuckFox' },
           ],
         },
       ],
@@ -136,7 +178,7 @@ const initPieChart = () => {
 }
 
 const debounce = (fn: Function, delay: number) => {
-  let timer: number | null = null
+  let timer: ReturnType<typeof setTimeout> | null = null
   return () => {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
@@ -170,47 +212,39 @@ onUnmounted(() => {
 <style scoped>
 /* 根容器 */
 .container {
-  width: 100vw;
+  width: 93vw;
   height: 100vh;
   padding: 2vw; /* 使用相对单位 */
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
 }
-
 /* 动画展示 */
 .showMe {
   display: flex;
   justify-content: center;
-  margin-bottom: 2vw;
-  background-color: brown;
-  padding: 1.5vw;
+  margin-bottom: 1vw;
   border-radius: 1vw;
   font-size: 1.5rem;
   flex: 0 0 auto;
 }
-
 /* 网格容器 */
 .grid-container {
   flex: 1;
   display: flex;
   align-items: stretch;
-  overflow: hidden;
 }
-
-/* 卡片样式 */
-.leftCard,
-.rightCard {
-  padding: 1.5vw;
+/* 标题展示 */
+.rightCardHeard,
+.middleCardHeard,
+.leftCardHeard {
+  padding: 1vw;
+  font-weight: bold; /* 加粗打字文字 */
+  font-size: 25px; /* 可选：调整文字大小 */
   text-align: center;
   border-radius: 0.8vw;
   margin-bottom: 2vw;
-}
-.leftCard {
-  background-color: aqua;
-}
-.rightCard {
-  background-color: cadetblue;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 /* 图表容器和登录表单容器 */
@@ -218,7 +252,7 @@ onUnmounted(() => {
 .pie-chart-container,
 .body-login {
   width: 100%;
-  height: calc(100% - 5vw); /* 减去卡片高度 */
+  /*height: calc(100% - 5vw); 减去卡片高度 */
 }
 
 /* 图表容器 */
@@ -243,6 +277,22 @@ onUnmounted(() => {
   border-radius: 1vw;
   padding: 2vw;
   box-shadow: 0 0 2vw #cacaca;
+}
+/* 打字的特效 */
+#typed {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: bold; /* 加粗打字文字 */
+  font-size: 32px; /* 可选：调整文字大小 */
+}
+#typed::after {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  content: '|';
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
 }
 
 /* 响应式调整 */
@@ -280,5 +330,12 @@ onUnmounted(() => {
     font-size: 1rem;
     padding: 0.8vw;
   }
+}
+
+/* 对登录框的俩按钮的设置 */
+.submitBtn,
+h1 {
+  display: flex;
+  justify-content: center;
 }
 </style>
