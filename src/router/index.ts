@@ -3,6 +3,7 @@ import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router
 import IndexPage from '@/pages/IndexPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import ManagePage from '@/pages/ManagePage.vue'
+import CreateNewTable from '@/components/CreateNewTable.vue'
 //创建路由
 const router = createRouter({
   history: createWebHistory(),
@@ -16,11 +17,13 @@ const router = createRouter({
       name: 'zhuye',
       path: '/home',
       component: IndexPage,
-    },
-    {
-      name: 'guanli',
-      path: '/manage',
-      component: ManagePage,
+      children: [
+        {
+          name: 'AddTable',
+          path: '/addtable',
+          component: CreateNewTable,
+        },
+      ],
     },
     {
       path: '/',

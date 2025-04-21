@@ -48,6 +48,7 @@ import { ref, nextTick, onUnmounted, getCurrentInstance, reactive, onMounted } f
 import * as echarts from 'echarts'
 import axios from 'axios'
 import Typed from 'typed.js'
+import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
 const { proxy } = getCurrentInstance() as { proxy: any }
@@ -82,12 +83,16 @@ const rules = reactive({
 
 const handleLogin = async () => {
   try {
-    const response = await proxy.$api.loginUser(loginForm) // 传递 formData
-    console.log('登录成功:', response.data)
-    // 处理登录成功的逻辑（如跳转页面）
+    const response = await proxy.$api.loginUser(loginForm)
+    console.log('显示传输来的值', response)
+    if (response.data.code === 200) {
+      ElMessage.success('登录成功')
+      localStorage.setItem('isLoggedIn', 'true')
+      localStorage.setItem('token', response.data.token)
+      router.push('/home')
+    }
   } catch (error) {
     console.error('登录失败:', error)
-    // 处理错误（如显示错误提示）
   }
 }
 // 重置表单
