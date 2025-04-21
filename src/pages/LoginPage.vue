@@ -29,7 +29,7 @@
               <el-input v-model="loginForm.username" />
             </el-form-item>
             <el-form-item label="密码:" prop="pass">
-              <el-input v-model="loginForm.pass" type="password" autocomplete="off" />
+              <el-input v-model="loginForm.password" type="password" autocomplete="off" />
             </el-form-item>
             <div class="submitBtn">
               <el-form-item>
@@ -44,12 +44,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, nextTick, onUnmounted } from 'vue'
+import { ref, nextTick, onUnmounted, getCurrentInstance, reactive, onMounted } from 'vue'
 import * as echarts from 'echarts'
+import axios from 'axios'
 import Typed from 'typed.js'
-import { reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-
+import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
+const { proxy } = getCurrentInstance() as { proxy: any }
 //开始标题动画展示效果
 onMounted(() => {
   new Typed('#typed', {
@@ -62,9 +63,10 @@ onMounted(() => {
 // 用户登录表单
 const ruleFormRef = ref(null)
 const router = useRouter()
+
 const loginForm = reactive({
   username: '',
-  pass: '',
+  password: '',
 })
 
 const rules = reactive({
@@ -80,9 +82,12 @@ const rules = reactive({
 
 const handleLogin = async () => {
   try {
-    router.push('/home')
+    const response = await proxy.$api.loginUser(loginForm) // 传递 formData
+    console.log('登录成功:', response.data)
+    // 处理登录成功的逻辑（如跳转页面）
   } catch (error) {
-    console.error('登录出错:', error)
+    console.error('登录失败:', error)
+    // 处理错误（如显示错误提示）
   }
 }
 // 重置表单
@@ -173,7 +178,7 @@ const initPieChart = () => {
 }
 
 const debounce = (fn: Function, delay: number) => {
-  let timer: number | null = null
+  let timer: ReturnType<typeof setTimeout> | null = null
   return () => {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => {
