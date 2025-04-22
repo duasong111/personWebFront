@@ -1,25 +1,14 @@
-// src/api/api.ts
+// 此处为定义的接口部分
 import axios from 'axios'
-
-interface LoginForm {
-  user: string
-  pwd: string
-}
-
-interface LoginResponse {
-  message: string
-  [key: string]: any
-}
+import type { LoginForm, LoginResponse } from '../types'
 
 export function loginUser(data: LoginForm): Promise<{ data: LoginResponse }> {
-  console.log('打印传输来的值', data)
   return axios.post('http://127.0.0.1:5000/login', data, {
     headers: {
       'Content-Type': 'application/json',
     },
   })
 }
-
 // 添加默认导出
 export default {
   loginUser,

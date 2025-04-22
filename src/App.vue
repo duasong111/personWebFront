@@ -6,7 +6,6 @@
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 </script>
-
 <style scoped>
 #app {
   width: 100%;

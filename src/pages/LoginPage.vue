@@ -49,6 +49,7 @@ import * as echarts from 'echarts'
 import axios from 'axios'
 import Typed from 'typed.js'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
 const { proxy } = getCurrentInstance() as { proxy: any }
 //开始标题动画展示效果
@@ -82,12 +83,16 @@ const rules = reactive({
 
 const handleLogin = async () => {
   try {
-    const response = await proxy.$api.loginUser(loginForm) // 传递 formData
-    console.log('登录成功:', response.data)
-    // 处理登录成功的逻辑（如跳转页面）
+    const response = await proxy.$api.loginUser(loginForm)
+    console.log('显示传输来的值', response)
+    if (response.data.status_code === 200) {
+      ElMessage.success('登录成功')
+      localStorage.setItem('isLoggedIn', 'true')
+      localStorage.setItem('token', response.data.token)
+      router.push('/home')
+    }
   } catch (error) {
     console.error('登录失败:', error)
-    // 处理错误（如显示错误提示）
   }
 }
 // 重置表单
@@ -212,7 +217,7 @@ onUnmounted(() => {
 <style scoped>
 /* 根容器 */
 .container {
-  width: 93vw;
+  width: 84vw;
   height: 100vh;
   padding: 2vw; /* 使用相对单位 */
   box-sizing: border-box;
