@@ -20,7 +20,7 @@ const router = createRouter({
       children: [
         {
           name: 'AddTable',
-          path: '/addtable',
+          path: 'addTable',
           component: CreateNewTable,
         },
       ],
@@ -39,7 +39,7 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     // 否则，检查是否已经登录
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true' // 或者通过 Vuex 判断
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
     if (!isLoggedIn) {
       next('/login') // 未登录，跳转到登录页面
     } else {
