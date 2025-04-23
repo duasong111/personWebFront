@@ -48,10 +48,12 @@ import { ref, nextTick, onUnmounted, getCurrentInstance, reactive, onMounted } f
 import * as echarts from 'echarts'
 import axios from 'axios'
 import Typed from 'typed.js'
+import authApi from '@/api/auth'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
 const { proxy } = getCurrentInstance() as { proxy: any }
+import type { FormInstance } from 'element-plus'
 //开始标题动画展示效果
 onMounted(() => {
   new Typed('#typed', {
@@ -62,7 +64,7 @@ onMounted(() => {
   })
 })
 // 用户登录表单
-const ruleFormRef = ref(null)
+const ruleFormRef = ref<FormInstance | null>(null)
 const router = useRouter()
 
 const loginForm = reactive({
@@ -81,25 +83,24 @@ const rules = reactive({
   ],
 })
 
-const handleLogin = async () => {
+async function handleLogin() {
   try {
-    const response = await proxy.$api.loginUser(loginForm)
-    console.log('显示传输来的值', response)
-    if (response.data.status_code === 200) {
+    const response = await authApi.loginUser(loginForm)
+    if (response.data.code === 200) {
       ElMessage.success('登录成功')
       localStorage.setItem('isLoggedIn', 'true')
-      localStorage.setItem('token', response.data.token)
+      localStorage.setItem('token', response.data.token || '')
       router.push('/home')
     }
   } catch (error) {
-    console.error('登录失败:', error)
+    console.error('Login failed:', error)
   }
 }
 // 重置表单
 const resetForm = () => {
+  if (!ruleFormRef.value) return
   ruleFormRef.value.resetFields()
 }
-
 const chartContainer = ref<HTMLDivElement | null>(null)
 const pieChartContainer = ref<HTMLDivElement | null>(null)
 let myChart: echarts.ECharts | null = null
@@ -212,6 +213,8 @@ onUnmounted(() => {
   if (myChart) myChart.dispose()
   if (pieChart) pieChart.dispose()
 })
+
+function hell() {}
 </script>
 
 <style scoped>
