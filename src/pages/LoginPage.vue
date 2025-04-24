@@ -47,13 +47,14 @@
 import { ref, nextTick, onUnmounted, getCurrentInstance, reactive, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import axios from 'axios'
+// import authApi from '../api/auth'
 import Typed from 'typed.js'
-import authApi from '@/api/auth'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
 const { proxy } = getCurrentInstance() as { proxy: any }
 import type { FormInstance } from 'element-plus'
+import { iconPropType } from 'element-plus/es/utils/index.mjs'
 //开始标题动画展示效果
 onMounted(() => {
   new Typed('#typed', {
@@ -86,7 +87,8 @@ const rules = reactive({
 async function handleLogin() {
   try {
     const response = await authApi.loginUser(loginForm)
-    if (response.data.code === 200) {
+    console.log(response)
+    if (response.data.status_code === 200) {
       ElMessage.success('登录成功')
       localStorage.setItem('isLoggedIn', 'true')
       localStorage.setItem('token', response.data.token || '')

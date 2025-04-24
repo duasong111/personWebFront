@@ -3,7 +3,7 @@ import axios from 'axios'
 import type { LoginForm, LoginResponse } from '../types'
 
 export function loginUser(data: LoginForm): Promise<{ data: LoginResponse }> {
-  return axios.post('http://127.0.0.1:5000/login', data, {
+  return axios.post('http://127.0.0.1:5000', data, {
     headers: {
       'Content-Type': 'application/json',
     },
