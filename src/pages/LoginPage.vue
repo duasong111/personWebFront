@@ -47,7 +47,7 @@
 import { ref, nextTick, onUnmounted, getCurrentInstance, reactive, onMounted } from 'vue'
 import * as echarts from 'echarts'
 import axios from 'axios'
-// import authApi from '../api/auth'
+import authApi from '../api/auth'
 import Typed from 'typed.js'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
