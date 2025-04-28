@@ -9,7 +9,8 @@
           <Aside></Aside>
         </el-aside>
         <el-main>
-          <Main></Main>
+          <router-view></router-view>
+          <!-- <Main></Main> -->
         </el-main>
       </el-container>
     </el-container>

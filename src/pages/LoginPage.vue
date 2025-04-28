@@ -54,6 +54,7 @@ import { ElMessage } from 'element-plus'
 import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
 const { proxy } = getCurrentInstance() as { proxy: any }
 import type { FormInstance } from 'element-plus'
+import { useUserStore } from '../store/userStore'
 import { iconPropType } from 'element-plus/es/utils/index.mjs'
 //开始标题动画展示效果
 onMounted(() => {
@@ -89,6 +90,8 @@ async function handleLogin() {
     const response = await authApi.loginUser(loginForm)
     console.log(response)
     if (response.data.status_code === 200) {
+      const userStore = useUserStore()
+      userStore.setUserInfo(loginForm.username, loginForm.password)
       ElMessage.success('登录成功')
       localStorage.setItem('isLoggedIn', 'true')
       localStorage.setItem('token', response.data.token || '')
@@ -100,8 +103,8 @@ async function handleLogin() {
 }
 // 重置表单
 const resetForm = () => {
-  if (!ruleFormRef.value) return
-  ruleFormRef.value.resetFields()
+  loginForm.username = ''
+  loginForm.password = ''
 }
 const chartContainer = ref<HTMLDivElement | null>(null)
 const pieChartContainer = ref<HTMLDivElement | null>(null)

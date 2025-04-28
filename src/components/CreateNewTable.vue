@@ -35,7 +35,7 @@
 <script lang="ts" setup name="CreateNewTable">
 import { reactive, ref } from 'vue'
 import type { FormItemProps, FormProps } from 'element-plus'
-
+import { useUserStore } from '../store/userStore'
 const labelPosition = ref<FormProps['labelPosition']>('right')
 const itemLabelPosition = ref<FormItemProps['labelPosition']>('')
 const formLabelAlign = reactive({
@@ -43,6 +43,8 @@ const formLabelAlign = reactive({
   region: '',
   type: '',
 })
-</script>
+const userStore = useUserStore()
+const username = userStore.username
 
-<style scoped></style>
+console.log('username', username)
+</script>
