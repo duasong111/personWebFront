@@ -44,4 +44,4 @@ npm run lint
 >>>>>>> master
 >>>>>>>
 >>>>>>> 图片展示
->>>>>>> https://github.com/user-attachments/assets/d3914fb1-e505-466b-a254-7a497184148a
+https://github.com/user-attachments/assets/67c0f2ee-1c7f-4571-b253-5f72c1633f67
