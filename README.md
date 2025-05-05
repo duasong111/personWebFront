@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# personWebFront
-个人网站的前端
-=======
 # personWeb
 
 This template should help get you started developing with Vue 3 in Vite.
@@ -21,27 +17,27 @@ See [Vite Configuration Reference](https://vite.dev/config/).
 ## Project Setup
 
 ```sh
-npm install
+pnpm install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
-npm run dev
+pnpm run dev
 ```
 
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-npm run build
+pnpm run build
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh
-npm run lint
+pnpm run lint
 ```
->>>>>>> master
->>>>>>>
->>>>>>> 图片展示
->>>>>>> https://github.com/user-attachments/assets/d3914fb1-e505-466b-a254-7a497184148a
+
+## 图片展示
+
+![图片展示](https://github.com/user-attachments/assets/d3914fb1-e505-466b-a254-7a497184148a)
