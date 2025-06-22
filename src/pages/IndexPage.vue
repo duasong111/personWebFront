@@ -5,12 +5,12 @@
         <Header></Header>
       </el-header>
       <el-container>
-        <el-aside width="200px">
+        <el-aside>
           <Aside></Aside>
         </el-aside>
         <el-main>
-          <router-view></router-view>
-          <!-- <Main></Main> -->
+          <!-- <router-view></router-view> -->
+          <Main></Main>
         </el-main>
       </el-container>
     </el-container>
@@ -24,7 +24,7 @@ import Main from '@/components/MainPage.vue'
 
 <style scoped>
 .common-layout {
-  height: 100vw;
-  width: 92vw;
+  /* height: 100vw; */
+  width: 95vw;
 }
 </style>

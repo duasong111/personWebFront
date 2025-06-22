@@ -1,8 +1,7 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import IndexPage from '@/pages/IndexPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
-import ManagePage from '@/pages/ManagePage.vue'
 import CreateNewTable from '@/components/CreateNewTable.vue'
 //创建路由
 const router = createRouter({
@@ -12,6 +11,11 @@ const router = createRouter({
       name: 'login',
       path: '/login',
       component: LoginPage,
+    },
+    {
+      name: 'show',
+      path: '/show',
+      component: () => import('@/components/show/showTech.vue'),
     },
     {
       name: 'zhuye',

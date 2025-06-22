@@ -44,18 +44,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, nextTick, onUnmounted, getCurrentInstance, reactive, onMounted } from 'vue'
+import { ref, nextTick, onUnmounted,reactive, onMounted } from 'vue'
 import * as echarts from 'echarts'
-import axios from 'axios'
 import authApi from '../api/auth'
 import Typed from 'typed.js'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
-const { proxy } = getCurrentInstance() as { proxy: any }
+// import { dataColorPaletteTask } from 'echarts/types/src/visual/style.js'
+// 由于不清楚 proxy 具体类型，可使用 unknown 代替 any，unknown 更安全
+// const { proxy } = getCurrentInstance() as { proxy: unknown }
 import type { FormInstance } from 'element-plus'
 import { useUserStore } from '../store/userStore'
-import { iconPropType } from 'element-plus/es/utils/index.mjs'
+// import { iconPropType } from 'element-plus/es/utils/index.mjs'
 //开始标题动画展示效果
 onMounted(() => {
   new Typed('#typed', {
@@ -94,7 +94,9 @@ async function handleLogin() {
       userStore.setUserInfo(loginForm.username, loginForm.password)
       ElMessage.success('登录成功')
       localStorage.setItem('isLoggedIn', 'true')
-      localStorage.setItem('token', response.data.token || '')
+// 确保传递给 localStorage.setItem 的值是字符串类型
+const token = typeof response.data.token === 'string' ? response.data.token : JSON.stringify(response.data.token);
+localStorage.setItem('token', token);
       router.push('/home')
     }
   } catch (error) {
@@ -160,8 +162,9 @@ const initPieChart = () => {
       tooltip: {
         trigger: 'item',
         formatter: (params: any) => {
-          return `${params.data.name}: ${params.data.title}`
-        },
+        const { name, title } = params.data || {}
+        return `${name || ''}: ${title || ''}`
+      }
       },
       legend: { top: '5%', left: 'center' },
       series: [
@@ -188,7 +191,9 @@ const initPieChart = () => {
   }
 }
 
-const debounce = (fn: Function, delay: number) => {
+// 定义一个通用的防抖函数，明确函数参数和返回类型
+// 这里假设传入的函数没有参数，返回值为 void
+const debounce = (fn: () => void, delay: number) => {
   let timer: ReturnType<typeof setTimeout> | null = null
   return () => {
     if (timer) clearTimeout(timer)
@@ -219,7 +224,7 @@ onUnmounted(() => {
   if (pieChart) pieChart.dispose()
 })
 
-function hell() {}
+// function hell() {}
 </script>
 
 <style scoped>
